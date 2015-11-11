@@ -15,9 +15,7 @@
     CGFloat start_offset_y;
     CGFloat y_distance_in_cells;
     NSInteger numberOfItems;
-    NSMutableArray<__kindof UICollectionViewLayoutAttributes *> *attributesList;
-    ;
-    
+    NSMutableArray<__kindof UICollectionViewLayoutAttributes *> *attributesList;    
 }
 
 - (void)assignmentDefaultValue {
@@ -45,7 +43,7 @@
 }
 
 - (CGSize)collectionViewContentSize {
-    CGFloat height = MAX((y_distance_in_cells * (CGFloat)numberOfItems), (self.collectionView.bounds.size.height + 1.0));
+    CGFloat height = MAX((y_distance_in_cells * numberOfItems), (self.collectionView.bounds.size.height + 1.0));
     return CGSizeMake(self.collectionView.bounds.size.width, height * 2.0);
 }
 
@@ -60,7 +58,7 @@
     
     CGFloat offset_y = self.collectionView.contentOffset.y;
     CGFloat max_offset_y = self.collectionView.contentSize.height - self.collectionView.bounds.size.height;
-    start_offset_y = floorf(max_offset_y / 2.0 / 30.0) * 30.0;
+    start_offset_y = floor(max_offset_y / 2.0 / 30.0) * 30.0;
     CGFloat reverse_offset_y = start_offset_y - offset_y;
     numberOfItems = [self.collectionView numberOfItemsInSection:0];
     for (NSInteger i = 0; i < numberOfItems; i++) {
@@ -68,8 +66,8 @@
         UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
         CGFloat center_x = self.collectionView.bounds.size.width / 2.0;
         CGFloat center_y = self.collectionView.bounds.size.height / 2.0 + offset_y + cardHeight / 2.0;
-        CGFloat ratio    = 1.0 - 0.1 * (CGFloat)indexPath.row;
-                ratio   += reverse_offset_y / y_distance_in_cells / 10.0;
+        CGFloat ratio    = 1.0 - 0.1 * indexPath.row;
+        ratio   += reverse_offset_y / y_distance_in_cells / 10.0;
         if (ratio < 1.0) {
             center_y += -(1.0 - ratio) * y_distance_in_cells * 10.0;
         }
@@ -79,7 +77,7 @@
         attributes.transform = CGAffineTransformMakeScale(scale, scale);
         attributes.bounds    = CGRectMake(0.0, 0.0, cardWidth, cardHeight);
         attributes.alpha     = 1.0;
-        attributes.zIndex    = 1000 - indexPath.row;
+        attributes.zIndex    = 10000 - indexPath.row;
         
         if (ratio > 1.0) {
             CGFloat alpha = (1.1 - ratio) * 10.0;
@@ -87,11 +85,11 @@
             alpha = MAX(alpha, 0.0);
             attributes.alpha = alpha;
             
-            CGFloat angle_ratio = 1.0- (1.1 - ratio) * 10.0;
+            CGFloat angle_ratio = 1.0 - (1.1 - ratio) * 10.0;
             angle_ratio = MIN(angle_ratio, 1.0);
             angle_ratio = MAX(angle_ratio, 0.0);
             CGFloat angle = -179.999 * angle_ratio;
-            CGFloat radians = angle * (CGFloat)M_PI / 180.0;
+            CGFloat radians = angle * M_PI / 180.0;
             
             CATransform3D transform_perspective = [self makePerspectiveTransform];
             CATransform3D transform_3d = CATransform3DRotate(transform_perspective, radians, 1.0, 0.0, 0.0);

@@ -41,8 +41,9 @@
     [super viewDidAppear:animated];
     
     CGFloat max_offset_y = self.collectionView.contentSize.height - self.collectionView.bounds.size.height;
-    start_offset_y = floor(max_offset_y / 2.0 / 30.0) * 30.0 - 30.0 * (CGFloat)self.dataArray.count;
+    start_offset_y = floor(max_offset_y / 2.0 / 30.0) * 30.0 - 30.0 * self.dataArray.count;
     [self.collectionView setContentOffset:CGPointMake(0.0, start_offset_y) animated:NO];
+    NSLog(@"contentSize.height :%f\nbounds.size.height :%f",self.collectionView.contentSize.height,self.collectionView.bounds.size.height);
 }
 
 - (void)prepareData {
@@ -51,6 +52,10 @@
         [self.dataArray addObject:image];
     }
     //[self.collectionView reloadData];
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -66,6 +71,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGFloat translate = scrollView.contentOffset.y - start_offset_y;
+    //NSLog(@"scroll:%f, %f", scrollView.contentOffset.y, translate);
     CGFloat target_scroll_y = 30.0 * (CGFloat)self.dataArray.count;
     if (ABS(translate) >= target_scroll_y) {
         [scrollView setContentOffset:CGPointMake(0.0, start_offset_y) animated:NO];

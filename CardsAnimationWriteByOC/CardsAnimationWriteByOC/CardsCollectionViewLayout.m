@@ -15,7 +15,7 @@
     CGFloat start_offset_y;
     CGFloat y_distance_in_cells;
     NSInteger numberOfItems;
-    NSMutableArray<__kindof UICollectionViewLayoutAttributes *> *attributesList;    
+    NSMutableArray<__kindof UICollectionViewLayoutAttributes *> *attributesList;
 }
 
 - (void)assignmentDefaultValue {
@@ -54,7 +54,7 @@
 - (void)prepareLayout {
     [super prepareLayout];
     
-    NSMutableArray<__kindof UICollectionViewLayoutAttributes *> *array = [NSMutableArray array];
+    NSMutableArray *array = [NSMutableArray array];
     
     CGFloat offset_y = self.collectionView.contentOffset.y;
     CGFloat max_offset_y = self.collectionView.contentSize.height - self.collectionView.bounds.size.height;
@@ -63,6 +63,7 @@
     numberOfItems = [self.collectionView numberOfItemsInSection:0];
     for (NSInteger i = 0; i < numberOfItems; i++) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
+        
         UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
         CGFloat center_x = self.collectionView.bounds.size.width / 2.0;
         CGFloat center_y = self.collectionView.bounds.size.height / 2.0 + offset_y + cardHeight / 2.0;

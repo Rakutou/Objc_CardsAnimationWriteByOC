@@ -4,3 +4,5 @@
 learn animation
 
 code review
+
+fixed some bug
